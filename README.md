@@ -34,7 +34,7 @@ console.log('hello world');
 hello world
 ===========
 
-**Use gani to render a "hello world" document.** To start, create a configuration script, then use the configuration in the *main.js* script.
+**Use gani to render a "hello world" document.** To start, create a configuration script, then use the configuration in the *main.js* script. Copy-paste the sources below.
 
 *main_cfg.js*
 
@@ -85,7 +85,116 @@ See the application render "hello world" in a browser document!
 
 
 ------------------------------
+node childs and pattern functions
+=================================
 
+**Use gani to render dynamic content to the document.** Create a new script that returns functions and name it *"main_fn.js"*. Update the configuration in *main_cfg.js* to include the functions in *main_fn.js* and to include a new page object called "pgls". Update the pattern returned by *main.js* to use the functions and new page object.
+
+
+*main_fn.js*
+
+```javascript
+let main_fn = {};
+
+main_fn.getclientwidth = () =>
+  window.innerWidth + 'px';
+
+main_fn.getdate = ([], opts) =>
+  opts.type === 'now' ? Date.now() : 'later';
+
+module.exports = main_fn;
+```
+
+*main_cfg.js*
+
+```javascript
+const pglabel = require('gani/src/basic/pglabel'),
+      pgls = require('gani/src/basic/pgls'),
+
+      main_fn = require('./main_fn');
+
+module.exports = {
+  lang : 'eng',
+  locale : 'US',
+  specpath : '',
+  specfn : main_fn, // functions
+  pages : [
+    pglabel,
+    pgls     // list type page node
+  ],
+  canvas : [
+    'main'
+  ]
+}
+```
+
+*main.js*
+
+```javascript
+const gani = require('gani'),
+      main_cfg = require('./main_cfg');
+
+gani.init(main_cfg, {
+  baseurl   : window.location.origin,
+
+  iso_getfn : (sess, cfg, isoname, fn) => {
+    fn(null, {
+      page : "pgls", // list type page node
+      name : "main",
+      child : [{
+        page : "pglabel",
+        name : "statictitle",
+        subject : [{
+          label : 'hello world'
+        }]
+      },{
+        page : "pglabel",
+        name : "date",
+        subject : [{
+          type : "fn",
+          fnname : "getdate",
+          options : { type : 'now' },
+          name : "label"
+        }]
+      },{
+        page : "pglabel",
+        name : "width",
+        subject : [{
+          type : "fn",
+          fnname : "getclientwidth",
+          name : "label"
+        }]
+      }]
+    });
+  }
+});
+```
+
+The application now renders a list with three label nodes: 1) "hello world", 2) a timestamp and 3) your browser width!
+
+**patterns defined in the "child" array of another pattern become childs of that pattern**. To see this in the data used by the application, open a browser console and enter `_cfg._rgraph.toJS()` --see that the child nodes are named with keys corresponding to this parent-child relationship.
+
+```javascript
+_gcfg._rgraph.toJS();
+
+  {
+    "/main" : { ... },
+    "/main/date" : { ... },
+    "/main/statictitle" : { ... },
+    "/main/width" : { ... }
+  }
+```
+
+**the graph which holds the state of the entire application can inspected in the console at any time**, `_cfg._rgraph.toJS()`.
+
+**patterns defined in the "subject" namespace, of type "fn", resolve to a value returned by calling the "fnname" function**. Functions defined in *main_fn.js* may return client details such as device, session or location.
+
+
+------------------------------
+using more patterns, managing patterns
+======================================
+
+tbd
 
 <!--
 

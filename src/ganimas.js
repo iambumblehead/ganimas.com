@@ -1,5 +1,5 @@
 // Filename: ganimas.js  
-// Timestamp: 2017.03.20-02:30:26 (last modified)
+// Timestamp: 2017.03.20-10:57:02 (last modified)
 // Author(s): bumblehead <chris@bumblehead.com>  
 
 const gani = require('gani'),
@@ -11,10 +11,31 @@ gani.init(ganimas_cfg, {
   
   iso_getfn : (sess, cfg, isoname, fn) => {
     fn(null, {
+      page : "pgls",
       name : "main",
-      page : "pglabel",
-      subject : [{
-        label : 'hello world'
+      child : [{
+        page : "pglabel",
+        name : "statictitle",
+        subject : [{
+          label : 'hello world'
+        }]
+      },{
+        page : "pglabel",
+        name : "date",
+        subject : [{
+          type : "fn",
+          fnname : "getdate",
+          options : { type : 'now' },
+          name : "label"
+        }]
+      },{
+        page : "pglabel",
+        name : "width",
+        subject : [{          
+          type : "fn",
+          fnname : "getclientwidth",
+          name : "label"
+        }]
       }]
     });
   }
