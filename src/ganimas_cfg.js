@@ -1,5 +1,5 @@
 // Filename: ganimas_cfg.js  
-// Timestamp: 2017.03.20-01:04:16 (last modified)
+// Timestamp: 2017.03.20-02:36:22 (last modified)
 // Author(s): bumblehead <chris@bumblehead.com>
 
 
@@ -14,13 +14,6 @@ module.exports = {
     pglabel
   ],
   canvas : [
-    //'root'
-    'root', {
-      pagearr : []
-      //pagearr : [[
-        //'/'  // path
-        //'examples' // rule?
-      //]]
-    }
+    'root'
   ]
-}
+};

@@ -47,16 +47,14 @@ module.exports = {
     pglabel
   ],
   canvas : [
-    'root', {
-      pagearr : []
-    }
+    'main'
   ]
 }
 ```
 
 Use the configuration start gani.
 
-*main_cfg.js*
+*main.js*
 
 ```javascript
 const gani = require('gani'),
@@ -77,7 +75,14 @@ gani.init(main_cfg, {
 });
 ```
 
-See the application render "hello world" in a browser document.
+See the application render "hello world" in a browser document!
+
+**`gani.init` is called with two configuration objects**
+
+ 1. **The general configuration** in *main_cfg.js* defines an array of 'pages' available to the application runtime. Each 'page', here after called a 'page object', corresponds to a specific behaviour, such as a text field, a navigation list or an animated canvas.
+
+ 2. **The environment configuration**, seen as the second parameter, returns "patterns" to the application, which are used to populate and connect nodes associating with the page objects defined in the _general cofiguration_. Patterns may be returned from network requests (client) or filesystem reads (server).
+
 
 ------------------------------
 
