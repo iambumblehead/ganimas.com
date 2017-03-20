@@ -31,8 +31,10 @@ console.log('hello world');
 ```
 
 ------------------------------
+hello world
+===========
 
-**Let's use gani** to render a "hello world" document. To start, create a configuration script.
+**Use gani to render a "hello world" document.** To start, create a configuration script, then use the configuration in the *main.js* script.
 
 *main_cfg.js*
 
@@ -51,8 +53,6 @@ module.exports = {
   ]
 }
 ```
-
-Use the configuration start gani.
 
 *main.js*
 
@@ -79,9 +79,9 @@ See the application render "hello world" in a browser document!
 
 **`gani.init` is called with two configuration objects**
 
- 1. **The general configuration** in *main_cfg.js* defines an array of 'pages' available to the application runtime. Each 'page', here after called a 'page object', corresponds to a specific behaviour, such as a text field, a navigation list or an animated canvas.
+ 1. **The general configuration** in *main_cfg.js* defines an array of 'pages' available to the application runtime. Each 'page', here after called a 'page object', corresponds to a specific behaviour, such as a text field, a navigation list or an animated canvas. [A set of 'basic' page objects is included w/ gani](https://github.com/iambumblehead/gani/tree/master/src/basic) and new page objects can be created and used.
 
- 2. **The environment configuration**, seen as the second parameter, returns "patterns" to the application, which are used to populate and connect nodes associating with the page objects defined in the _general cofiguration_. Patterns may be returned from network requests (client) or filesystem reads (server).
+ 2. **The environment configuration**, seen as the second parameter, returns "patterns" to the application, which are used to construct and connect nodes that associate with page objects defined in the _general cofiguration_. Patterns may be returned from network requests (client) or filesystem reads (server). The example above returns an object literal just to simplify the explanation here.
 
 
 ------------------------------
