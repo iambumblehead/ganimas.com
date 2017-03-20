@@ -85,8 +85,8 @@ See the application render "hello world" in a browser document!
 
 
 ------------------------------
-node childs and pattern functions
-=================================
+node childs, pattern functions, inspecting the graph
+====================================================
 
 **Use gani to render dynamic content to the document.** Create a new script that returns functions and name it *"main_fn.js"*. Update the configuration in *main_cfg.js* to include the functions in *main_fn.js* and to include a new page object called "pgls". Update the pattern returned by *main.js* to use the functions and new page object.
 
@@ -193,6 +193,31 @@ _gcfg._rgraph.toJS();
 ------------------------------
 using more patterns, managing patterns
 ======================================
+
+tbd
+
+the subject namespace, using callbacks
+======================================
+
+tbd
+
+data nodes
+==========
+
+tbd
+
+updating data nodes, the fuid namespace, patching the graph
+===========================================================
+
+tbd
+
+other init and base namespaces
+==============================
+
+tbd
+
+advanced, datals nodes and pattern mapping
+==========================================
 
 tbd
 
