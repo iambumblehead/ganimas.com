@@ -30,8 +30,6 @@ getting started
 console.log('hello world');
 ```
 
-You've got hello world!
-
 ------------------------------
 
 **Let's use gani** to render a "hello world" document. To start, create a configuration script.
@@ -56,7 +54,7 @@ module.exports = {
 }
 ```
 
-Next, use the configuration start gani.
+Use the configuration start gani.
 
 *main_cfg.js*
 
@@ -79,7 +77,7 @@ gani.init(main_cfg, {
 });
 ```
 
-Render the document and see "hello world".
+See the application render "hello world" in a browser document.
 
 ------------------------------
 
