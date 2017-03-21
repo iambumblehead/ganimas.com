@@ -79,16 +79,20 @@ See the application render "hello world" in a browser document!
 
 **`gani.init` is called with two configuration objects**
 
- 1. **The general configuration** in *main_cfg.js* defines an array of 'pages' available to the application runtime. Each 'page', here after called a 'page object', corresponds to a specific behaviour, such as a text field, a navigation list or an animated canvas. [A set of 'basic' page objects is included w/ gani](https://github.com/iambumblehead/gani/tree/master/src/basic) and new page objects can be created and used.
+ 1. **The general configuration** in *main_cfg.js* defines an array of 'pages' available to the application runtime. Each 'page' ( called 'page object' from here forward), corresponds to a specific behaviour, such as a text field, a navigation list or an animated canvas. [A set of 'basic' page objects is included w/ gani][41] and new page objects can be defined and used.
 
- 2. **The environment configuration**, seen as the second parameter, returns "patterns" to the application, which are used to construct and connect nodes that associate with page objects defined in the _general cofiguration_. Patterns are usually json files returned from network requests (client) or filesystem reads (server). The example above returns an object literal for simplification.
+ 2. **The environment configuration**, seen as the second parameter, returns "patterns" to the application. [Patterns][40] are used to construct and connect nodes associated with the page objects defined in the _general cofiguration_. Patterns are usually json files returned from network requests (client) or filesystem reads (server). The example above returns an object literal for simplification.
+
+
+[40]: https://github.com/iambumblehead/specmob "specmob"
+[41]: https://github.com/iambumblehead/gani/tree/master/src/basic "basic page objects"
 
 
 ------------------------------
 node childs, pattern functions, inspecting the graph
 ====================================================
 
-**Use gani to render dynamic content to the document.** Create a new script that returns functions and name it *"main_fn.js"*. Update the configuration in *main_cfg.js* to include the functions in *main_fn.js* and to include a new page object called "pgls". Update the pattern returned by *main.js* to use the functions and new page object.
+**Use gani to render dynamic content to the document.** Create a new script to export functions and name it *"main_fn.js"*. Update the configuration in *main_cfg.js* to include the functions in *main_fn.js* and to include a new page object called "pgls". Update the pattern returned by *main.js* to use the functions and new page object.
 
 
 *main_fn.js*
@@ -170,9 +174,9 @@ gani.init(main_cfg, {
 });
 ```
 
-The application now renders a list with three label nodes: 1) "hello world", 2) a timestamp and 3) your browser width!
+The application now renders a list with three label nodes: 1) "hello world", 2) a timestamp and 3) the browser width!
 
-**patterns defined in the "child" array of another pattern become childs of that pattern**. To see this in the data used by the application, open a browser console and enter `_cfg._rgraph.toJS()` --see that the child nodes are named with keys corresponding to this parent-child relationship.
+**patterns defined in the "child" array of another pattern become childs of that pattern**. To see this in the data used by the application, open a browser console and enter `_cfg._rgraph.toJS()` --see that child nodes are named with keys corresponding to the parent-child relationship.
 
 ```javascript
 _gcfg._rgraph.toJS();
@@ -185,9 +189,9 @@ _gcfg._rgraph.toJS();
   }
 ```
 
-**the graph which holds the state of the entire application can inspected in the console at any time**, `_cfg._rgraph.toJS()`.
+**the graph containing the state of the entire application can inspected in the console at any time**, `_cfg._rgraph.toJS()`.
 
-**patterns defined in the "subject" namespace, of type "fn", resolve to a value returned by calling the "fnname" function**. Functions defined in *main_fn.js* may return client details such as device, session or location.
+**patterns defined in the "subject" namespace, with "type" : "fn", resolve to the value returned by calling the "fnname" function**. Functions defined in *main_fn.js* may return client details such as device, session or location. Notice how the "getdata" function takes an options object and passes it to the function.
 
 
 ------------------------------
@@ -196,8 +200,8 @@ using more patterns, managing patterns
 
 tbd
 
-the subject namespace, using callbacks
-======================================
+the subject namespace, callbacks and dynamic options
+====================================================
 
 tbd
 
