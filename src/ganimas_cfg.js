@@ -1,5 +1,5 @@
 // Filename: ganimas_cfg.js  
-// Timestamp: 2017.03.20-02:36:22 (last modified)
+// Timestamp: 2017.03.23-15:42:59 (last modified)
 // Author(s): bumblehead <chris@bumblehead.com>
 
 
@@ -21,6 +21,7 @@ module.exports = {
     pgls
   ],
   canvas : [
-    'root'
+    //'root'
+    '/spec/view/main'
   ]
 };

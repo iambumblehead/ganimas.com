@@ -1,5 +1,5 @@
 // Filename: express.js  
-// Timestamp: 2017.03.19-23:56:28 (last modified)
+// Timestamp: 2017.03.23-15:40:59 (last modified)
 
 var fs = require('fs'),
     pem = require('pem'),
@@ -36,17 +36,14 @@ let build = (fn) => {
       'ganimas.css'
     ]
   }, (err, res) => {
-    /*
     pagedeploy.convert({
-      disabled : false,
       supportedLocaleArr : ['US'],
       supportedLangArr : ['eng-US'],
       publicPath : '/spec',
       inputDir   : './src/spec',
       outputDir  : './build/spec'
     }, fn);
-     */
-    fn(err, res);
+
   });
 };
 

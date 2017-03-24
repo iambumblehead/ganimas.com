@@ -34,7 +34,7 @@ console.log('hello world');
 hello world
 ===========
 
-**Use gani to render a "hello world" document.** To start, create a configuration script, then use the configuration in the *main.js* script. Copy-paste the sources below.
+**Use gani to render a "hello world" document.** To start, 1) create a configuration script, 2) then use the configuration in the *main.js* script. Copy-paste the sources below.
 
 *main_cfg.js*
 
@@ -92,7 +92,7 @@ See the application render "hello world" in a browser document!
 node childs, pattern functions, inspecting the graph
 ====================================================
 
-**Use gani to render dynamic content to the document.** Create a new script to export functions and name it *"main_fn.js"*. Update the configuration in *main_cfg.js* to include the functions in *main_fn.js* and to include a new page object called "pgls". Update the pattern returned by *main.js* to use the functions and new page object.
+**Use gani to render dynamic content to the document.** 1) Create a new script to export functions and name it *"main_fn.js"*. 2) Update the configuration in *main_cfg.js* to include the functions in *main_fn.js* and to include a new page object called "pgls". 3) Update the pattern returned by *main.js* to use the functions and new page object.
 
 
 *main_fn.js*
@@ -176,30 +176,221 @@ gani.init(main_cfg, {
 
 The application now renders a list with three label nodes: 1) "hello world", 2) a timestamp and 3) the browser width!
 
-**patterns defined in the "child" array of another pattern become childs of that pattern**. To see this in the data used by the application, open a browser console and enter `_cfg._rgraph.toJS()` --see that child nodes are named with keys corresponding to the parent-child relationship.
+**patterns defined in the "child" array of another pattern describe child patterns**. Open a browser console and enter `_cfg._rgraph.toJS()` in order to see how child nodes are named with keys corresponding to the parent-child relationship.
 
-```javascript
+```bash
 _gcfg._rgraph.toJS();
 
   {
-    "/main" : { ... },
-    "/main/date" : { ... },
-    "/main/statictitle" : { ... },
-    "/main/width" : { ... }
+   ▶ "/main" : { ... },
+   ▶ "/main/date" : { ... },
+   ▶ "/main/statictitle" : { ... },
+   ▶ "/main/width" : { ... }
   }
 ```
 
-**the graph containing the state of the entire application can inspected in the console at any time**, `_cfg._rgraph.toJS()`.
+**the graph containing the state of the entire application can inspected in the console any time**: `_cfg._rgraph.toJS()`.
 
 **patterns defined in the "subject" namespace, with "type" : "fn", resolve to the value returned by calling the "fnname" function**. Functions defined in *main_fn.js* may return client details such as device, session or location. Notice how the "getdata" function takes an options object and passes it to the function.
 
 
 ------------------------------
-using more patterns, managing patterns
+using pattern a file
 ======================================
 
-tbd
+**Use patterns from JSON files.** 1) Copy the pattern returned by *main.js* to a web-available JSON file at *"/spec/view/main/US.json"*. 2) Add the path to *main_cfg.js*. 3) Update *main.js* to return the JSON file at the path using an HTTP request.
 
+*/spec/view/main/US.json*
+
+```json
+{
+  "page" : "pgls",
+  "name" : "main",
+  "child" : [{
+    "page" : "pglabel",
+    "name" : "statictitle",
+    "subject" : [{
+      "label" : "hello world"
+    }]
+  },{
+    "page" : "pglabel",
+    "name" : "date",
+    "subject" : [{
+      "type" : "fn",
+      "fnname" : "getdate",
+      "options" : { "type" : "now" },
+      "name" : "label"
+    }]
+  },{
+    "page" : "pglabel",
+    "name" : "width",
+    "subject" : [{
+      "type" : "fn",
+      "fnname" : "getclientwidth",
+      "name" : "label"
+    }]
+  }]
+}
+```
+
+
+*main_cfg.js*
+
+```javascript
+const pglabel = require('gani/src/basic/pglabel'),
+      pgls = require('gani/src/basic/pgls'),
+
+      main_fn = require('./main_fn');
+
+module.exports = {
+  lang : 'eng',
+  locale : 'US',
+  specpath : '',
+  specfn : main_fn,
+  pages : [
+    pglabel,
+    pgls
+  ],
+  canvas : [
+    '/spec/view/main' // path to root JSON pattern
+  ]
+}
+```
+
+
+*main.js*
+
+```javascript
+const gani = require('gani'),
+      main_cfg = require('./main_cfg');
+
+gani.init(main_cfg, {
+  baseurl   : window.location.origin,
+
+  iso_getfn : (sess, cfg, isoname, fn) => {
+    let request = new XMLHttpRequest();
+
+    request.open('GET', cfg.iso_getonpath(isoname), true);
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 400) {
+        fn(null, JSON.parse(request.responseText));
+      }
+    };
+    request.send();
+  }
+});
+```
+
+See the application run using the JSON file at */spec/view/main/US.json*. 
+
+**Session (or "sess") values found on "lang" and "locale" properties are used to construct corresponding json paths that are requested**.
+
+Obtaining patterns from JSON files enables one to begin pre-processing, merging, localising, authorizing and lazy-requesting patterns.
+
+
+------------------------------
+managing pattern files
+======================================
+
+**Manage patterns files in the large.** A tool called "page-deploy" is made to manage gani's pattern files. Let's avoid analysing this tool now but begin using it to manage our pattern files. 1) Break the json pattern file into smaller files and 2) use page-deploy to generate a single file from the smaller "source" files.
+
+Currently the application uses this file:
+
+```
+./spec/view/main/US.json
+```
+
+Create three new files in the following directories:
+
+```
+./patterns/spec/view/main/spec-baseLocale.json
+./patterns/spec/view/main-date/spec-baseLocale.json
+./patterns/spec/view/main-statictitle/spec-baseLocale.json
+./patterns/spec/view/main-width/spec-baseLocale.json
+```
+
+Use the below contents for each file.
+
+*/patterns/spec/view/main/spec-baseLocale.json*
+
+```json
+{
+  "page" : "pgls",
+  "name" : "main",
+  "child" : [{
+    "type" : "local-ref",
+    "path" : "../main-statictitle"
+  },{
+    "type" : "local-ref",
+    "path" : "../main-date"
+  },{
+    "type" : "local-ref",
+    "path" : "../main-width"
+  }]
+}
+```
+
+*/patterns/spec/view/main-date/spec-baseLocale.json*
+
+```json
+{
+  "page" : "pglabel",
+  "name" : "date",
+  "subject" : [{
+    "type" : "fn",
+    "fnname" : "getdate",
+    "options" : { "type" : "now" },
+    "name" : "label"
+  }]
+}
+```
+
+*/patterns/spec/view/main-statictitle/spec-baseLocale.json*
+
+```json
+{
+  "page" : "pglabel",
+  "name" : "statictitle",
+  "subject" : [{
+    "label" : "hello world"
+  }]
+}
+```
+
+*/patterns/spec/view/main-width/spec-baseLocale.json*
+
+```json
+{
+  "page" : "pglabel",
+  "name" : "width",
+  "subject" : [{
+    "type" : "fn",
+    "fnname" : "getclientwidth",
+    "name" : "label"
+  }]
+}
+```
+
+Setup page-deploy to read files in "./patterns/spec/" and generate/save files in "./spec". Do it with javascript:
+
+```javascript
+pagedeploy.convert({
+  supportedLocaleArr : ['US'],
+  supportedLangArr : ['eng-US'],
+  publicPath : '/spec',
+  inputDir   : './path/to/spec',
+  outputDir  : './path/to/patterns/spec'
+}, (err, res) => {
+  console.log('done.');
+});
+```
+
+**_page-deploy_ uses each directory's "spec-baseLocale.json" file as the default file** for defining each supported Language and/or Locale file. For more information about localisation with page-deploy see page-deploy's github page.
+
+See the application run using the JSON file, created by page-deploy, at */spec/view/main/US.json*. 
+
+
+------------------------------
 the subject namespace, callbacks and dynamic options
 ====================================================
 
@@ -225,13 +416,4 @@ advanced, datals nodes and pattern mapping
 
 tbd
 
-<!--
-
-To construct the document, gani needs a json file.
-
-The JSON patterns gani uses are pre-processed and saved to an output directory using page-deploy.
-
-the following directory and file structure is recommended (and used by _this_ web site):
-
--->
 
