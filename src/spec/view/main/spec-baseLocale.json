@@ -1,0 +1,17 @@
+{
+  "page" : "pgls",
+  "name" : "main",
+  "child" : [{
+    "type" : "local-ref",
+    "path" : "../main-statictitle"
+  },{
+    "type" : "local-ref",
+    "path" : "../main-date"
+  },{
+    "type" : "local-ref",
+    "path" : "../main-width"
+  },{
+    "type" : "local-ref",
+    "path" : "../main-nameinput"    
+  }]
+}

@@ -1,11 +1,13 @@
 // Filename: ganimas_cfg.js  
-// Timestamp: 2017.03.23-15:42:59 (last modified)
+// Timestamp: 2017.03.26-02:01:01 (last modified)
 // Author(s): bumblehead <chris@bumblehead.com>
 
 
 const pglabel = require('gani/src/basic/pglabel'),
+      pgtext = require('gani/src/basic/pgtext'),
       pgls = require('gani/src/basic/pgls'),
 
+      ganimas_cb = require('./ganimas_cb'),
       ganimas_fn = require('./ganimas_fn');
 
 module.exports = {
@@ -15,9 +17,11 @@ module.exports = {
   specpath : '',
   
   specfn : ganimas_fn,
+  speccb : ganimas_cb,  
   
   pages : [
     pglabel,
+    pgtext,
     pgls
   ],
   canvas : [

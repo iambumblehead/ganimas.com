@@ -1,0 +1,22 @@
+{
+  "page" : "pgtext",
+  "name" : "nameinput",
+  "init" : [{
+    "name" : "userid",
+    "type" : "cb",
+    "cbname" : "getuserid"
+  }],  
+  "subject" : [{
+    "labelprimary" : "user name"
+  },{
+    "type" : "cb",
+    "cbname" : "getusername",
+    "name" : "value",
+    "argprops" : ["init.userid"],
+    "optarr" : [{
+      "name" : "part",
+      "type" : "literal",
+      "value" : "last"
+    }]    
+  }]
+}

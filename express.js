@@ -1,14 +1,20 @@
 // Filename: express.js  
-// Timestamp: 2017.03.23-15:40:59 (last modified)
+// Timestamp: 2017.03.25-13:55:20 (last modified)
 
 var fs = require('fs'),
     pem = require('pem'),
+    gani = require('gani'),
+    path = require('path'),
     express = require('express'),
     scroungejs = require('scroungejs'),
     pagedeploy = require('page-deploy'),
     bodyParser = require('body-parser'),
     serveIndex = require('serve-index'),
     cookieParser = require('cookie-parser'),
+    
+    ganimas_cfg = require('./src/ganimas_cfg'),
+    ganimas_srvtest = require('./src/ganimas_srvtest'),
+    
     https = require('https'),
     http = require('http'),
     port = 3000,
@@ -17,7 +23,13 @@ var fs = require('fs'),
       name : 'localhost', 
       env : 'development',
       porthttp : 4343,
-      porthttps : 4545 };
+      porthttps : 4545 },
+    cfgdataservice = {
+      ismocked : true,
+      port : "8000",
+      addr : "192.168.180.190",
+      token : "lskdjfos983eljf398fjls839jfls8jf"
+    };
 
 
 let build = (fn) => {
@@ -69,6 +81,28 @@ build((err, res) => {
 
   app.use('/node_modules', express.static(__dirname + '/node_modules'));
   app.use('/node_modules', serveIndex('node_modules', {icons : true}));
+
+  gani.start(ganimas_cfg, {
+    baseurl : path.join(process.cwd(), '/src/'),
+    dirs_path : path.join(process.cwd(), '/src/'),
+
+    servicearr : [
+      gani.srv('/test*', ganimas_srvtest, cfgdataservice)
+    ],
+
+    iso_getfn : () => {
+      
+    },
+
+    sess_initfn : () => {
+      
+    },    
+    
+    srv_getfn : (method, path, data, token, fn, timeout) => {
+      gani.srv_dispatch(method, path, data, token, fn, timeout);
+    }
+  }).attach(app, cfgdataservice);
+  
 
   http.createServer(app).listen(cfgexpress.porthttp);
 

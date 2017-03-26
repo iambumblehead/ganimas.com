@@ -1,0 +1,10 @@
+{
+  "page" : "pglabel",
+  "name" : "date",
+  "subject" : [{
+    "type" : "fn",
+    "fnname" : "getdate",
+    "options" : { "type" : "now" },
+    "name" : "label"
+  }]
+}

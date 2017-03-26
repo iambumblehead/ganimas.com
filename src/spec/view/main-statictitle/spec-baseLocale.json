@@ -1,0 +1,7 @@
+{
+  "page" : "pglabel",
+  "name" : "statictitle",
+  "subject" : [{
+    "label" : "hello world"
+  }]
+}

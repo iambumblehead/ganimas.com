@@ -1,0 +1,9 @@
+{
+  "page" : "pglabel",
+  "name" : "width",
+  "subject" : [{          
+    "type" : "fn",
+    "fnname" : "getclientwidth",
+    "name" : "label"
+  }]
+}

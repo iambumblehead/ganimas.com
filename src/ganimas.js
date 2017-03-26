@@ -1,5 +1,5 @@
 // Filename: ganimas.js  
-// Timestamp: 2017.03.23-15:54:36 (last modified)
+// Timestamp: 2017.03.26-04:30:13 (last modified)
 // Author(s): bumblehead <chris@bumblehead.com>  
 
 const gani = require('gani'),
@@ -19,6 +19,14 @@ gani.init(ganimas_cfg, {
       }
     };
     request.send();
+  },
+
+  sess_initfn : (sess, cfg, fn) => {
+    sess.token = 'mytoken1234';
+    sess.namefirst = 'jim';
+    sess.namelast = 'jones';
+    
+    fn(null, sess);
   }
 });
 
