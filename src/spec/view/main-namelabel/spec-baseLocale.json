@@ -1,0 +1,10 @@
+{
+  "page" : "pglabel",
+  "name" : "namelabel",
+  "subject" : [{
+    "type" : "subjprop",
+    "path" : "/main/datauser",
+    "propname" : "namefirst",
+    "name" : "label"
+  }]
+}

@@ -1,9 +1,10 @@
 // Filename: ganimas_cfg.js  
-// Timestamp: 2017.03.26-02:01:01 (last modified)
+// Timestamp: 2017.03.26-23:56:35 (last modified)
 // Author(s): bumblehead <chris@bumblehead.com>
 
 
-const pglabel = require('gani/src/basic/pglabel'),
+const gani = require('gani'),
+      pglabel = require('gani/src/basic/pglabel'),
       pgtext = require('gani/src/basic/pgtext'),
       pgls = require('gani/src/basic/pgls'),
 
@@ -20,6 +21,7 @@ module.exports = {
   speccb : ganimas_cb,  
   
   pages : [
+    gani.pgdata,
     pglabel,
     pgtext,
     pgls

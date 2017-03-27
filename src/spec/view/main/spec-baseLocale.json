@@ -3,13 +3,10 @@
   "name" : "main",
   "child" : [{
     "type" : "local-ref",
-    "path" : "../main-statictitle"
+    "path" : "../main-datauser"
   },{
     "type" : "local-ref",
-    "path" : "../main-date"
-  },{
-    "type" : "local-ref",
-    "path" : "../main-width"
+    "path" : "../main-namelabel"
   },{
     "type" : "local-ref",
     "path" : "../main-nameinput"    
